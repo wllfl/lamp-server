@@ -3,7 +3,7 @@
 define("PATH", "/var/www/html/");
 define("URL", "localhost");
 define("HOST", "localhost");
-define("DB", "test");
+define("DB", "mysql");
 define("USER", "root");
 define("PASS", "011224");
 
