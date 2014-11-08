@@ -1,6 +1,6 @@
-﻿<?php
+<?php
 #Define constantes de configuração
-define("PATH", "/var/www/");
+define("PATH", "/var/www/html/");
 define("URL", "localhost");
 define("HOST", "localhost");
 define("DB", "test");
@@ -25,7 +25,20 @@ try{
 
 # Captura pastas e arquivos dentro do diretório /var/www/
 $diretorio = dir(PATH);
+$array_dir = array();
+while($arquivo = $diretorio->read()):
+		$array_dir[strtolower($arquivo)] = $arquivo;
+endwhile;
+ksort($array_dir);
+
 $arquivos = dir(PATH);
+$array_file = array();
+while($arquivo = $arquivos->read()):
+		if (is_file($arquivo)):
+			$array_file[strtolower($arquivo)] = $arquivo;
+		endif;
+endwhile;
+ksort($array_file);
 
 ?>
 <html>
@@ -77,21 +90,21 @@ $arquivos = dir(PATH);
 	    			<div id="box-diretorio">
 	    			<h2>Diretórios</h2>
 		    			<?php
-		    			while($arquivo = $diretorio -> read()){
-		    				if ($arquivo != '.' && $arquivo != '..' && is_dir($arquivo)):
+		    			foreach($array_dir as $arquivo):
+		    				if ($arquivo != '.' && $arquivo != '..'):
 							  echo "<span class='linha-diretorio'><img src='img/pasta.png' height='14' width='16'><a href='http://".URL."/{$arquivo}'>{$arquivo}</a></span><br/>";
 							endif;
-						}
+						endforeach
 		    			?>
 	    			</div>
 	    			<div id="box-diretorio">
 	    			<h2>Arquivos</h2>
 		    			<?php
-		    			while($arquivo = $arquivos -> read()){
+		    			foreach($array_file as $arquivo):
 		    				if ($arquivo != '.' && $arquivo != '..' && !is_dir($arquivo)):
 							  echo "<span class='linha-diretorio'><img src='img/arquivo.png' height='18' width='16'><a href='http://".URL."/{$arquivo}'>{$arquivo}</a></span><br/>";
 							endif;
-						}
+						endforeach
 		    			?>
 	    			</div>
 	    		</div>
