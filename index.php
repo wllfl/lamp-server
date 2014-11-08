@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 #Define constantes de configuração
 define("PATH", "/var/www/html/");
 define("URL", "localhost");
