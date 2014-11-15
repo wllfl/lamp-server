@@ -91,7 +91,7 @@ ksort($array_file);
 	    			<h2>Diretórios</h2>
 		    			<?php
 		    			foreach($array_dir as $arquivo):
-		    				if ($arquivo != '.' && $arquivo != '..'):
+		    				if ($arquivo != '.' && $arquivo != '..' && is_dir($arquivo)):
 							  echo "<span class='linha-diretorio'><img src='img/pasta.png' height='14' width='16'><a href='http://".URL."/{$arquivo}'>{$arquivo}</a></span><br/>";
 							endif;
 						endforeach
