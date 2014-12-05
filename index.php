@@ -19,7 +19,7 @@ if($file != ""):
 endif;
 unset($file);
 
-# Função para exlcluir diretórios, sub-diretórios e arquivos
+# Função para excluir diretórios, sub-diretórios e arquivos
 function ExcluiDir($pasta){
     
     if ($dd = opendir($pasta)) {
