@@ -209,7 +209,8 @@ ksort($array_file);
 	    		<hr>
 	    		<div id="rodape">
 	    			Desenvolvido por William F. Leite<br/><br/>
-	    			Blog: <a href="http://devwilliam.blogspot.com.br">devwilliam.com.br</a>
+	    			Blog: <a href="http://devwilliam.blogspot.com.br">devwilliam.com.br</a><br/><br/>
+	    			GitHub: <a href="https://github.com/wllfl/lamp-server">https://github.com/wllfl/lamp-server</a>
 	    		</div>
 	    	</div>
 	    </div>
