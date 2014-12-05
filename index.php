@@ -3,9 +3,40 @@
 define("PATH", "/var/www/html/");
 define("URL", "localhost");
 define("HOST", "localhost");
-define("DB", "test");
+define("DB", "mysql");
 define("USER", "root");
 define("PASS", "011224");
+
+# Captura submissão para exclusão de pastas ou arquivos
+$file = (isset($_POST['file'])) ? $_POST['file'] : '' ;
+
+if($file != ""):
+	if(is_dir($file)):
+		ExcluiDir($file);
+	else:
+		unlink(PATH.$file);
+	endif;
+endif;
+unset($file);
+
+# Função para exlcluir diretórios, sub-diretórios e arquivos
+function ExcluiDir($pasta){
+    
+    if ($dd = opendir($pasta)) {
+        while (false !== ($Arq = readdir($dd))) {
+            if($Arq != "." && $Arq != ".."){
+                $Path = "$pasta/$Arq";
+                if(is_dir($Path)){
+                    ExcluiDir($Path);
+                }elseif(is_file($Path)){
+                    unlink($Path);
+                }
+            }
+        }
+        closedir($dd);
+    }
+    rmdir($pasta);
+}
 
 # Captura versão do servidor MySQL instalado
 try{
@@ -21,6 +52,60 @@ try{
 }catch (PDOException $erro){
 	echo "Erro ao verificar versão do servidor MySQL: " . $erro->getmessage();
 	$versao = "Indisponível";
+}
+
+# Função para capturar permissões de arquivos
+function getPermissao($file){
+	$perms = fileperms($file);
+
+	if (($perms & 0xC000) == 0xC000) {
+	    // Socket
+	    $info = 's';
+	} elseif (($perms & 0xA000) == 0xA000) {
+	    // Link simbólico
+	    $info = 'l';
+	} elseif (($perms & 0x8000) == 0x8000) {
+	    // Regular
+	    $info = '-';
+	} elseif (($perms & 0x6000) == 0x6000) {
+	    // Bloco especial
+	    $info = 'b';
+	} elseif (($perms & 0x4000) == 0x4000) {
+	    // Diretório
+	    $info = 'd';
+	} elseif (($perms & 0x2000) == 0x2000) {
+	    // Caractere especial
+	    $info = 'c';
+	} elseif (($perms & 0x1000) == 0x1000) {
+	    // FIFO pipe
+	    $info = 'p';
+	} else {
+	    // Desconhecido
+	    $info = 'u';
+	}
+
+	// Proprietário
+	$info .= (($perms & 0x0100) ? 'r' : '-');
+	$info .= (($perms & 0x0080) ? 'w' : '-');
+	$info .= (($perms & 0x0040) ?
+	            (($perms & 0x0800) ? 's' : 'x' ) :
+	            (($perms & 0x0800) ? 'S' : '-'));
+
+	// Grupo
+	$info .= (($perms & 0x0020) ? 'r' : '-');
+	$info .= (($perms & 0x0010) ? 'w' : '-');
+	$info .= (($perms & 0x0008) ?
+	            (($perms & 0x0400) ? 's' : 'x' ) :
+	            (($perms & 0x0400) ? 'S' : '-'));
+
+	// Outros
+	$info .= (($perms & 0x0004) ? 'r' : '-');
+	$info .= (($perms & 0x0002) ? 'w' : '-');
+	$info .= (($perms & 0x0001) ?
+            (($perms & 0x0200) ? 't' : 'x' ) :
+            (($perms & 0x0200) ? 'T' : '-'));
+
+	return $info;
 }
 
 # Captura pastas e arquivos dentro do diretório /var/www/
@@ -91,8 +176,15 @@ ksort($array_file);
 	    			<h2>Diretórios</h2>
 		    			<?php
 		    			foreach($array_dir as $arquivo):
-		    				if ($arquivo != '.' && $arquivo != '..'):
-							  echo "<span class='linha-diretorio'><img src='img/pasta.png' height='14' width='16'><a href='http://".URL."/{$arquivo}'>{$arquivo}</a></span><br/>";
+		    				if ($arquivo != '.' && $arquivo != '..' && is_dir($arquivo)):
+		    				    $permissao = getPermissao($arquivo);
+							    echo "<span class='linha-diretorio' title='Permissões {$permissao}'>
+							    		<form id='form_{$arquivo}' method='POST'>
+							    		<input type='hidden' name='file' value='{$arquivo}'>
+							    		<img src='img/excluir.png' height='15' width='16' title='Excluir Pasta' onclick='valida(\"{$arquivo}\");'>
+								    	<img src='img/pasta.png' height='14' width='16'><a href='http://".URL."/{$arquivo}'>{$arquivo}</a>
+								    	</form>
+								    </span><br/>";
 							endif;
 						endforeach
 		    			?>
@@ -102,7 +194,13 @@ ksort($array_file);
 		    			<?php
 		    			foreach($array_file as $arquivo):
 		    				if ($arquivo != '.' && $arquivo != '..' && !is_dir($arquivo)):
-							  echo "<span class='linha-diretorio'><img src='img/arquivo.png' height='18' width='16'><a href='http://".URL."/{$arquivo}'>{$arquivo}</a></span><br/>";
+							    echo "<span class='linha-diretorio' title='Permissões {$permissao}'>
+										<form id='form_{$arquivo}' method='POST'>
+										<input type='hidden' name='file' value='{$arquivo}'>
+										<img src='img/excluir.png' height='16' width='16' title='Excluir Arquivo' onclick='valida(\"{$arquivo}\");'>
+										<img src='img/arquivo.png' height='18' width='16'><a href='http://".URL."/{$arquivo}'>{$arquivo}</a>
+										</form>
+									 </span><br/>";
 							endif;
 						endforeach
 		    			?>
@@ -115,5 +213,13 @@ ksort($array_file);
 	    		</div>
 	    	</div>
 	    </div>
+	    <script type="text/javascript">
+	    function valida(file){
+	    	var retorno = confirm("Deseja excluir esse arquivo?");
+	    	if(retorno){
+	    		document.forms['form_'+file].submit();
+	    	}
+	    }
+	    </script>
     </body>
 </html>

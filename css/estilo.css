@@ -104,4 +104,5 @@ h2{
 
 .box-extensao img, .linha-diretorio img{
 	margin-right: 4px;
+	cursor: pointer;
 }
