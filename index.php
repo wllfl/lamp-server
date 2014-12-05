@@ -19,7 +19,7 @@ if($file != ""):
 endif;
 unset($file);
 
-# Função para excluir diretórios, sub-diretórios e arquivos
+# Função para exlcluir diretórios, sub-diretórios e arquivos
 function ExcluiDir($pasta){
     
     if ($dd = opendir($pasta)) {
@@ -184,7 +184,7 @@ ksort($array_file);
 							    		<img src='img/excluir.png' height='15' width='16' title='Excluir Pasta' onclick='valida(\"{$arquivo}\");'>
 								    	<img src='img/pasta.png' height='14' width='16'><a href='http://".URL."/{$arquivo}'>{$arquivo}</a>
 								    	</form>
-								    </span><br/>";
+								    </span>";
 							endif;
 						endforeach
 		    			?>
@@ -200,7 +200,7 @@ ksort($array_file);
 										<img src='img/excluir.png' height='16' width='16' title='Excluir Arquivo' onclick='valida(\"{$arquivo}\");'>
 										<img src='img/arquivo.png' height='18' width='16'><a href='http://".URL."/{$arquivo}'>{$arquivo}</a>
 										</form>
-									 </span><br/>";
+									 </span>";
 							endif;
 						endforeach
 		    			?>

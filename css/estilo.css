@@ -86,11 +86,6 @@ h2{
 	text-align: left;
 }
 
-.linha-diretorio{
-	line-height: 20px;
-	text-align: left;
-	margin: 5px;
-}
 
 .linha-diretorio a, #box-informacao a{
 	text-decoration: none;
@@ -105,4 +100,16 @@ h2{
 .box-extensao img, .linha-diretorio img{
 	margin-right: 4px;
 	cursor: pointer;
+}
+
+.linha-diretorio{
+	text-align: left;
+	margin: 7px 7px 5px 0;
+	height: 15px;
+	width: 459px;
+	display: block;
+}
+
+*{
+	box-sizing:border-box;
 }
