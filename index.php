@@ -182,7 +182,7 @@ ksort($array_file);
 							    		<form id='form_{$arquivo}' method='POST'>
 							    		<input type='hidden' name='file' value='{$arquivo}'>
 							    		<img src='img/excluir.png' height='15' width='16' title='Excluir Pasta' onclick='valida(\"{$arquivo}\");'>
-								    	<img src='img/pasta.png' height='14' width='16'><a href='http://".URL."/{$arquivo}'>{$arquivo}</a>
+								    	<img src='img/pasta.png' height='14' width='16'><a target='_blank' href='http://".URL."/{$arquivo}'>{$arquivo}</a>
 								    	</form>
 								    </span>";
 							endif;
@@ -198,7 +198,7 @@ ksort($array_file);
 										<form id='form_{$arquivo}' method='POST'>
 										<input type='hidden' name='file' value='{$arquivo}'>
 										<img src='img/excluir.png' height='16' width='16' title='Excluir Arquivo' onclick='valida(\"{$arquivo}\");'>
-										<img src='img/arquivo.png' height='18' width='16'><a href='http://".URL."/{$arquivo}'>{$arquivo}</a>
+										<img src='img/arquivo.png' height='18' width='16'><a target='_blank' href='http://".URL."/{$arquivo}'>{$arquivo}</a>
 										</form>
 									 </span>";
 							endif;
