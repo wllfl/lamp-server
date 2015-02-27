@@ -129,6 +129,7 @@ ksort($array_file);
 <html>
     <head>
         <title>LAMP - Linux</title>
+        <link rel="shortcut icon" type="image/ico" href="img/favicon.ico"/>
         <meta http-equiv="Content-Type" content="text/html; utf-8"/>
         <meta http-equiv="content-language" content="pt-br" />
         <link rel='stylesheet' type='text/css' href='css/reset.css'/>
